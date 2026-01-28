@@ -1,6 +1,6 @@
 {
   "name": "rewst-openapi",
-  "description": "Create custom integrations for Rewst - validates, fixes, and builds OpenAPI specs",
+  "description": "Create custom integrations for Rewst. Includes 8 skills: validate, fix, transform, create, from-url, subset, merge, document. Plus a CLI linter using Rewst's exact validation rules.",
   "version": "1.1.0",
   "author": {
     "name": "Tim Fournet",
