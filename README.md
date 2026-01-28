@@ -39,10 +39,23 @@ check if my-api.json will work with Rewst before I upload it
 ## What It Does
 
 - **Creates** OpenAPI specs from API documentation or from scratch
-- **Fixes** specs that Rewst rejects
+- **Fixes** specs that Rewst rejects (including auto-generating missing operationIds/summaries)
 - **Validates** specs using Rewst's exact rules
 - **Shrinks** specs that are too large
 - **Merges** multiple specs into one
+
+## Updating
+
+To get the latest version:
+```
+/plugin update rewst-openapi@tim4net
+```
+
+To enable auto-updates:
+1. Run `/plugin`
+2. Go to **Marketplaces** tab
+3. Select **tim4net**
+4. Choose **Enable auto-update**
 
 ## License
 
