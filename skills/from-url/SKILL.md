@@ -21,10 +21,11 @@ If no URL provided, ask for the API documentation URL.
 1. Fetch the documentation page
 2. Look for:
    - API base URL
-   - Authentication method
+   - Authentication method and token acquisition
    - Endpoint listings
    - Request/response examples
    - Rate limiting info
+   - Pagination patterns
    - **Logo/Icon** - Look for an SVG logo to use as the integration icon
 
 3. Report findings:
@@ -36,6 +37,22 @@ If no URL provided, ask for the API documentation URL.
 - **Name**: [Extracted or inferred]
 - **Base URL**: [Found URL pattern]
 - **Auth type**: [Bearer/API Key/OAuth/etc.]
+
+### Authentication Details
+- **Token type**: [API Key as Bearer / OAuth / Session-based]
+- **How to obtain**: [Settings page / OAuth app / Session endpoint]
+- **Token expiration**: [Never / X hours / requires refresh]
+- **Refresh mechanism**: [None / Refresh token / Re-authenticate]
+
+### Pagination Style
+- **Type**: [Offset/Limit / Cursor / Page-based / None found]
+- **Parameters**: [offset+limit / cursor / page+per_page]
+- **Response fields**: [total, has_more, next_cursor, etc.]
+
+### Rate Limiting
+- **Limits**: [X requests per minute/hour]
+- **Headers**: [X-RateLimit-* / Retry-After]
+- **Behavior**: [429 response / throttling]
 
 ### Discovered Endpoints
 | Method | Path | Description |
@@ -50,6 +67,8 @@ If no URL provided, ask for the API documentation URL.
 - [ ] Has response examples
 - [ ] Has schema definitions
 - [ ] Has authentication docs
+- [ ] Has pagination docs
+- [ ] Has rate limit docs
 
 ### Challenges
 - [Any issues found: incomplete docs, requires auth to view, etc.]
@@ -61,11 +80,29 @@ If documentation is incomplete, ask user:
 
 1. **Missing base URL**: "What's the API base URL? (e.g., https://api.example.com/v1)"
 
-2. **Missing auth info**: "How do users authenticate? Do you have a sample Bearer token format?"
+2. **Missing auth info**: "How do users authenticate? Options:
+   - API key used directly as Bearer token (where do they get it?)
+   - OAuth app - client credentials flow (where do they create apps?)
+   - Session endpoint - call /auth first to get token
+   - Something else?"
 
-3. **Partial endpoints**: "I found X endpoints. Are there others you need? Common ones include: [suggestions]"
+3. **Token expiration**: "Do tokens expire? If so:
+   - How long are they valid?
+   - Is there a refresh endpoint or do users re-authenticate?"
 
-4. **Missing schemas**: "I couldn't find response schemas. Do you have example responses?"
+4. **Pagination**: "How does pagination work on list endpoints?
+   - Offset/limit (offset=0, limit=50)
+   - Cursor-based (cursor=abc123)
+   - Page numbers (page=1, per_page=25)
+   - What fields indicate more pages? (total, has_more, next_cursor)"
+
+5. **Rate limits**: "Are there rate limits?
+   - How many requests per minute/hour?
+   - What happens when exceeded? (429 response, Retry-After header)"
+
+6. **Partial endpoints**: "I found X endpoints. Are there others you need? Common ones include: [suggestions]"
+
+7. **Missing schemas**: "I couldn't find response schemas. Do you have example responses?"
 
 ### Phase 3: Find Logo/Icon
 
@@ -158,8 +195,16 @@ Does this look correct? Any fields to add/modify?
 
 1. Validate the built spec
 2. Check Rewst compatibility
-3. Write to `{api-name}-rewst.json`
-4. Generate brief documentation
+3. Create integration folder and write files:
+
+```
+{api-name}/
+├── {api-name}-rewst.json    # The OpenAPI spec
+├── {api-name}-icon.svg      # Logo/icon if found
+└── README.md                # Setup instructions
+```
+
+Use lowercase with hyphens for the folder name (e.g., `buy-me-a-coffee/`).
 
 ## Handling Common Documentation Patterns
 

@@ -287,25 +287,24 @@ Parser errors about version or swagger field.
 
 ### Causes
 
-1. **Using OpenAPI 3.1.x**
-   ```json
-   "openapi": "3.1.0"  // Not supported
-   ```
+Missing or malformed `openapi` field.
 
-2. **Using Swagger 2.0**
-   ```json
-   "swagger": "2.0"  // Must be converted
-   ```
+### Note on Version Support
+
+Rewst CI v2 supports:
+- **OpenAPI 3.0.x** - Fully supported
+- **OpenAPI 3.1.x** - Fully supported
+- **Swagger 2.0** - Auto-converted to OpenAPI 3.0 on upload
 
 ### Fixes
 
-1. **Downgrade 3.1 to 3.0**
-   - Change version: `"openapi": "3.0.3"`
-   - Remove 3.1-specific features (webhooks, etc.)
-
-2. **Convert Swagger 2.0**
-   - Use https://editor.swagger.io/ to convert
-   - Or use `swagger2openapi` npm package
+Ensure the `openapi` field is present and valid:
+```json
+{
+  "openapi": "3.0.3",
+  ...
+}
+```
 
 ---
 
@@ -341,6 +340,135 @@ Convert to Bearer token:
 ```
 
 Update security references throughout spec.
+
+---
+
+## Issue: Operations silently skipped
+
+### Symptoms
+
+Some operations don't appear in Rewst after upload.
+
+### Causes
+
+1. **Missing both summary and operationId**
+   ```json
+   // SKIPPED - no summary OR operationId
+   "/users": {
+     "get": {
+       "description": "Get users",
+       "responses": { ... }
+     }
+   }
+   ```
+
+2. **Operation marked deprecated**
+   ```json
+   "/old-endpoint": {
+     "get": {
+       "deprecated": true,  // SKIPPED
+       "operationId": "oldEndpoint"
+     }
+   }
+   ```
+
+### Fixes
+
+Add at least `summary` or `operationId` to every operation:
+```json
+"/users": {
+  "get": {
+    "operationId": "getUsers",
+    "summary": "List all users",
+    "responses": { ... }
+  }
+}
+```
+
+---
+
+## Issue: Cookie parameters ignored
+
+### Symptoms
+
+Cookie parameters defined in spec don't appear in Rewst actions.
+
+### Causes
+
+Rewst doesn't support `in: cookie` parameters:
+```json
+{
+  "name": "session_id",
+  "in": "cookie",  // NOT SUPPORTED
+  "schema": { "type": "string" }
+}
+```
+
+### Fixes
+
+Convert to header parameters if possible:
+```json
+{
+  "name": "Cookie",
+  "in": "header",
+  "schema": { "type": "string" },
+  "description": "Session cookie in format: session_id=value"
+}
+```
+
+Or document that cookies must be passed via the generic request action.
+
+---
+
+## Error: Pack name already exists
+
+### Symptoms
+
+```
+This name is already in use by a pack in your organization.
+```
+
+### Causes
+
+The `info.title` value (minus " API" suffix) matches an existing pack name.
+
+### Fixes
+
+1. **Use a unique title**
+   ```json
+   "info": {
+     "title": "Acme API v2"  // Different from existing "Acme API"
+   }
+   ```
+
+2. **Delete the existing pack first** if you're replacing it
+
+---
+
+## Issue: Reserved parameter names conflict
+
+### Symptoms
+
+Parameters behave unexpectedly or cause errors.
+
+### Causes
+
+Using reserved parameter names that conflict with Rewst internals:
+
+```
+json_body, body, json, type, url_path, method, results_key, results, data,
+output_schema, path_params, query_params, headers, cookies, required, parameters,
+response, id, name, parent, parent_id, filter, filters, filter_key, filter_keys,
+filter_value, filter_values, query, queries, q
+```
+
+### Fixes
+
+Rename parameters to avoid conflicts:
+- `id` → `resource_id` or `item_id`
+- `name` → `resource_name`
+- `filter` → `filter_expression`
+- `query` → `search_query`
 
 ---
 

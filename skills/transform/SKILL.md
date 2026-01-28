@@ -23,9 +23,21 @@ Parse the arguments:
 First, analyze the source spec:
 1. Read and validate the JSON
 2. Check current OpenAPI version
-3. Identify authentication method
-4. Count operations and estimate output size
-5. Report findings before proceeding
+3. Identify authentication method and token patterns
+4. Detect pagination style (offset/limit, cursor, page-based)
+5. Find session/token endpoints (auth, refresh)
+6. Note rate limiting documentation
+7. Count operations and estimate output size
+8. Report findings before proceeding
+
+Report on API patterns found:
+```
+### API Patterns Detected
+- **Auth**: [API Key / OAuth / Session-based / Other]
+- **Token endpoints**: [/auth/token, /auth/refresh, etc.]
+- **Pagination**: [offset/limit / cursor / page-based / none]
+- **Rate limits**: [documented / not found]
+```
 
 ### Phase 2: Version Conversion
 
@@ -64,6 +76,18 @@ Convert to Bearer token auth:
 ```
 
 3. Remove operation-level security that uses other schemes
+
+4. **Preserve auth/session endpoints** - Keep any endpoints for:
+   - Token creation (POST /auth, /oauth/token, /session)
+   - Token refresh (POST /auth/refresh, /oauth/token with grant_type=refresh_token)
+   - Mark these with `"security": []` so they can be called without a token
+
+5. **Document token acquisition** in info.description:
+```json
+"info": {
+  "description": "## Authentication\n\n[How to obtain Bearer token from original auth method]"
+}
+```
 
 ### Phase 4: Structure Fixes
 
@@ -115,6 +139,11 @@ If spec exceeds 450KB:
 4. **Trim** verbose descriptions
 5. **Remove** examples if needed
 
+**Preserve critical patterns:**
+- Keep auth/session/refresh endpoints
+- Keep pagination parameters on list endpoints
+- Keep rate limit documentation in descriptions
+
 ### Phase 7: Validation
 
 Before writing output:
@@ -125,9 +154,26 @@ Before writing output:
 
 ## Output
 
-1. Write transformed spec to output path
-2. Provide summary of changes made
-3. List any manual steps needed
+Create a dedicated folder for the integration:
+
+```
+{api-name}/
+├── {api-name}-rewst.json    # The transformed spec
+├── {api-name}-icon.svg      # Logo/icon if available (copy from source or fetch)
+└── README.md                # Transformation notes and setup instructions
+```
+
+Use lowercase with hyphens for the folder name (e.g., `acme-api/`).
+
+### Deliverables
+
+1. Create the integration folder
+2. Write transformed spec to the folder
+3. Write README.md with:
+   - Summary of transformations applied
+   - How to obtain Bearer token
+   - List of available operations
+   - Any manual steps needed
 
 ## Reference
 

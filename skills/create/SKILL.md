@@ -139,8 +139,8 @@ Each operation should follow this pattern:
 
 **List endpoint:**
 - GET `/resources`
-- Query params: `limit`, `offset`, `filter`, `sort`
-- Response: Array wrapper with pagination
+- Query params: pagination (see below), `filter`, `sort`
+- Response: Array wrapper with pagination metadata
 
 **Get single:**
 - GET `/resources/{id}`
@@ -161,6 +161,60 @@ Each operation should follow this pattern:
 - DELETE `/resources/{id}`
 - Response: 204 No Content
 
+### Pagination Patterns
+
+Ask user which pagination style the API uses:
+
+**Offset/Limit** (most common):
+```json
+"parameters": [
+  { "name": "offset", "in": "query", "schema": { "type": "integer", "default": 0 } },
+  { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 50 } }
+]
+```
+
+**Cursor-based** (modern APIs):
+```json
+"parameters": [
+  { "name": "cursor", "in": "query", "schema": { "type": "string" } },
+  { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 50 } }
+]
+```
+
+**Page-based**:
+```json
+"parameters": [
+  { "name": "page", "in": "query", "schema": { "type": "integer", "default": 1 } },
+  { "name": "per_page", "in": "query", "schema": { "type": "integer", "default": 25 } }
+]
+```
+
+Include pagination metadata in response schemas (total, has_more, next_cursor, etc.).
+
+### Authentication Patterns
+
+Ask how users obtain Bearer tokens:
+
+1. **API Key as Bearer**: Key used directly as token - document where to get key
+2. **OAuth App**: Client credentials flow - document app creation process
+3. **Session Token**: API creates session first - include session creation endpoint
+4. **Token Refresh**: Tokens expire - include refresh endpoint if needed
+
+Add authentication instructions in the `info.description` field:
+
+```json
+"info": {
+  "description": "## Authentication\n\nObtain your API key from Settings > API. Use it as the Bearer token."
+}
+```
+
+### Rate Limiting
+
+If the API has rate limits, document them:
+- In `info.description`: mention limits and behavior
+- Add 429 response with Retry-After header
+- Note any per-endpoint variations
+
 ## Quality Checks
 
 Before finalizing, verify:
@@ -175,10 +229,28 @@ Before finalizing, verify:
 
 ## Output
 
-Provide:
-1. The complete spec file
-2. Setup instructions for Rewst
-3. List of available operations for the user
+### Folder Structure
+
+Create a dedicated folder for the integration:
+
+```
+{api-name}/
+├── {api-name}-rewst.json    # The OpenAPI spec
+├── {api-name}-icon.svg      # Logo/icon if available
+└── README.md                # Setup instructions
+```
+
+Use lowercase with hyphens for the folder name (e.g., `buy-me-a-coffee/`, `acme-api/`).
+
+### Deliverables
+
+1. Create the integration folder
+2. Write the complete spec file to the folder
+3. Write a README.md with:
+   - Brief description of the API
+   - How to obtain Bearer token/credentials
+   - List of available operations
+   - Any known limitations or notes
 
 ## Reference
 
