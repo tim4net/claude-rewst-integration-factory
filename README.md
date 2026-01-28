@@ -41,6 +41,8 @@ check if my-api.json will work with Rewst before I upload it
 - **Creates** OpenAPI specs from API documentation or from scratch
 - **Fixes** specs that Rewst rejects (including auto-generating missing operationIds/summaries)
 - **Validates** specs using Rewst's exact rules
+- **Configures authentication** for Bearer, API Key, Basic Auth, or OAuth2
+- **Sets up pagination** using Rewst's auto-detection patterns (offset/limit, cursor, page-based)
 - **Shrinks** specs that are too large
 - **Merges** multiple specs into one
 - **Finds logos** by searching the web for SVG icons to include with your integration
