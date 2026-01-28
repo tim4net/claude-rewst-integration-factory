@@ -185,87 +185,29 @@ flowchart TD
 
 ---
 
-## Example Conversations
+## Examples
 
-You don't need to memorize commands. Just describe what you need and Claude will help. Here are some examples:
+Just describe what you need:
 
-### "I have a spec but Rewst won't accept it"
+```
+help me create a rewst integration for https://justgood.coffee
+```
 
-> **You:** I tried uploading logicmonitor-api.json to Rewst but it gave me errors. Can you fix it?
->
-> **Claude:** I'll check what's wrong and fix it for you.
-> *(Claude runs validation, identifies issues, and repairs them)*
->
-> **Claude:** Fixed 12 issues - the responses were missing content wrappers. I've saved the fixed version to `logicmonitor-api-fixed.json`. Try uploading that one.
+```
+I have logicmonitor-api.json but Rewst won't accept it, can you fix it?
+```
 
-### "I have API docs but no spec file"
+```
+this connectwise spec is too big for Rewst, help me shrink it
+```
 
-> **You:** I want to create a Rewst integration for Datto RMM. Their API docs are at https://rmm.datto.com/api-docs/
->
-> **Claude:** I'll look at those docs and build a spec for you. What operations do you need most - device management, alerts, or something else?
->
-> **You:** Mostly device management and alerts
->
-> **Claude:** *(builds the spec)* Done! I've created `datto-rmm-rewst.json` with 24 operations covering devices and alerts. It's 89KB, well under Rewst's limit.
+```
+check if my-api.json will work with Rewst
+```
 
-### "I want to build a spec from scratch"
-
-> **You:** I need to create an OpenAPI spec for our internal ticketing API
->
-> **Claude:** I can help with that. What's the base URL for your API?
->
-> **You:** https://tickets.acme.com/api/v1
->
-> **Claude:** What authentication does it use?
->
-> **You:** Bearer token
->
-> **Claude:** What are the main things you can do with the API?
->
-> **You:** Create tickets, list tickets, update status, add comments
->
-> **Claude:** *(builds the spec step by step with you)*
-
-### "My spec is too big"
-
-> **You:** I have a ConnectWise spec with 400 operations but Rewst says it's too large
->
-> **Claude:** That's over Rewst's ~500KB limit. What workflows are you building? I'll help you pick the most important operations.
->
-> **You:** Mostly ticket management and company/contact sync
->
-> **Claude:** *(analyzes and recommends)* I'd suggest keeping these 85 operations... *(creates a smaller spec)*
-
-### "Check before I upload"
-
-> **You:** Can you check if acme-api.json will work with Rewst before I upload it?
->
-> **Claude:** *(runs Rewst's exact validation rules)*
->
-> **Claude:** ✓ Looks good! 47 operations, 156KB. No errors found - it should upload fine.
-
-### "I have multiple specs to combine"
-
-> **You:** I have separate specs for billing-api.json and inventory-api.json. Can you combine them into one Rewst integration?
->
-> **Claude:** I'll merge them and check for any conflicts... *(combines specs)* Done! Created `combined-api.json` with 62 operations total.
-
----
-
-## Quick Reference
-
-While conversations work great, you can also use slash commands directly:
-
-| What you want | Slash command | Or just say... |
-|---------------|---------------|----------------|
-| Check a spec | `/rewst-openapi:validate spec.json` | "check if spec.json works with Rewst" |
-| Fix errors | `/rewst-openapi:fix spec.json` | "fix the errors in spec.json" |
-| Convert formats | `/rewst-openapi:transform old.json new.json` | "convert this swagger file for Rewst" |
-| Build from scratch | `/rewst-openapi:create "API Name"` | "help me create a spec for X API" |
-| Build from docs | `/rewst-openapi:from-url https://...` | "create a spec from these API docs" |
-| Shrink size | `/rewst-openapi:subset large.json` | "this spec is too big for Rewst" |
-| Combine specs | `/rewst-openapi:merge a.json b.json` | "combine these specs into one" |
-| Generate docs | `/rewst-openapi:document spec.json` | "what operations are in this spec?" |
+```
+combine billing-api.json and inventory-api.json into one integration
+```
 
 ## Command-Line Linter
 
