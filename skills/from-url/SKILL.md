@@ -240,11 +240,26 @@ Use lowercase with hyphens for the folder name (e.g., `buy-me-a-coffee/`).
 - URL: [documentation URL]
 - Scraped: [date]
 
+### What This Plugin Did For You
+- **X operations created** with proper operationId and summary (all will appear in Rewst)
+- **X schemas inferred** from response examples
+- **Authentication configured** for [Bearer/OAuth/etc.]
+- **Pagination parameters added** using Rewst's auto-detection patterns
+- **Rate limits documented** in API description
+
 ### Result
 - File: api-name-rewst.json
 - Operations: X
 - Schemas: X (Y inferred)
 - Size: X KB
+
+### Operations Created
+| operationId | summary | Method | Path |
+|-------------|---------|--------|------|
+| listUsers | List Users | GET | /users |
+| getUserById | Get User By Id | GET | /users/{id} |
+| createUser | Create User | POST | /users |
+| ... | ... | ... | ... |
 
 ### Confidence Levels
 | Section | Confidence | Notes |

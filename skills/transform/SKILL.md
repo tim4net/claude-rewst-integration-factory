@@ -191,6 +191,32 @@ Use lowercase with hyphens for the folder name (e.g., `acme-api/`).
    - List of available operations
    - Any manual steps needed
 
+### Output Summary
+
+Include a clear summary showing the plugin's value:
+
+```
+## Transformation Complete
+
+### What This Plugin Fixed
+- **X operations saved**: Generated missing operationId/summary (would have been silently skipped!)
+- Converted authentication from [original] to Bearer token
+- Fixed N response content structures
+- Fixed N requestBody content structures
+- Added N missing global tags
+
+### Auto-Generated Fields
+| Path | Method | Generated operationId | Generated summary |
+|------|--------|----------------------|-------------------|
+| /users | GET | listUsers | List Users |
+| ... | ... | ... | ... |
+
+### Result
+- Operations: X (all will appear in Rewst)
+- Size: X KB (under 500KB limit)
+- Ready for upload!
+```
+
 ## Reference
 
 See the knowledge files:

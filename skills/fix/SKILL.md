@@ -175,6 +175,17 @@ Ensure all path parameters have `required: true`:
 | Missing ErrorResponse | 1 | Added |
 | Path param required | 5 | Fixed |
 
+### Auto-Generated Fields
+Without this plugin, **12 operations would have been silently skipped** by Rewst.
+The following operationIds and summaries were auto-generated:
+
+| Path | Method | Generated operationId | Generated summary |
+|------|--------|----------------------|-------------------|
+| /users | GET | listUsers | List Users |
+| /users/{id} | GET | getUserById | Get User By Id |
+| /users/{id} | DELETE | deleteUserById | Delete User By Id |
+| ... | ... | ... | ... |
+
 ### Validation
 - JSON: Valid
 - OpenAPI: Valid

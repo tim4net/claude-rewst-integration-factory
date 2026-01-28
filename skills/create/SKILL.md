@@ -254,6 +254,35 @@ Use lowercase with hyphens for the folder name (e.g., `buy-me-a-coffee/`, `acme-
    - List of available operations
    - Any known limitations or notes
 
+### Output Summary
+
+Show the user what the plugin created:
+
+```
+## Integration Created: [API Name]
+
+### What This Plugin Built
+- **X operations** ready for Rewst (each with operationId + summary)
+- **X schemas** for request/response validation
+- **Authentication** configured for [type]
+- **Pagination** using Rewst's auto-detection patterns
+- **Folder structure** with spec, icon, and README
+
+### Operations
+| operationId | summary | Method | Path |
+|-------------|---------|--------|------|
+| listUsers | List Users | GET | /users |
+| getUserById | Get User By Id | GET | /users/{id} |
+| ... | ... | ... | ... |
+
+### Files Created
+- {api-name}/{api-name}-rewst.json (X KB)
+- {api-name}/{api-name}-icon.svg
+- {api-name}/README.md
+
+Ready to upload to Rewst Custom Integration v2!
+```
+
 ## Reference
 
 See the knowledge files:
