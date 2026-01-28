@@ -3,7 +3,7 @@
   "description": "Create custom integrations for Rewst - validates, fixes, and builds OpenAPI specs",
   "version": "1.1.0",
   "author": {
-    "name": "Tim",
+    "name": "Tim Fournet",
     "url": "https://github.com/tim4net"
   },
   "repository": {

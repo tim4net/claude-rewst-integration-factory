@@ -107,29 +107,20 @@ You should see a version number like `1.x.x`.
 
 Once Claude Code is running:
 
-**Option 1: From GitHub (recommended)**
+**Step 1: Add the marketplace**
 ```
-/plugin marketplace add tim4net/claude-rewst-integration-factory
-/plugin install rewst-openapi@tim4net-claude-rewst-integration-factory
-```
-
-**Option 2: Clone and install locally**
-```bash
-# In your terminal (not Claude Code)
-git clone https://github.com/tim4net/claude-rewst-integration-factory.git
+/plugin marketplace add tim4net/tim4net
 ```
 
-Then in Claude Code:
+**Step 2: Install the plugin**
 ```
-/plugin marketplace add ./claude-rewst-integration-factory
-/plugin install rewst-openapi@claude-rewst-integration-factory
+/plugin install rewst-openapi@tim4net
 ```
 
-**Option 3: Use the plugin manager UI**
+**Or use the UI:**
 1. Type `/plugin` to open the plugin manager
-2. Go to the **Marketplaces** tab
-3. Add: `tim4net/claude-rewst-integration-factory`
-4. Go to **Discover** tab and install `rewst-openapi`
+2. Go to **Marketplaces** tab → Add `tim4net/tim4net`
+3. Go to **Discover** tab → Install `rewst-openapi`
 
 ## Which Skill Do I Need?
 
