@@ -215,6 +215,20 @@ If the API has rate limits, document them:
 - Add 429 response with Retry-After header
 - Note any per-endpoint variations
 
+## Find Logo/Icon
+
+Before finalizing, find an SVG logo for the integration:
+
+1. **Search** for `"{API name}" logo SVG` or `"{API name}" brand assets`
+2. **Check common paths**:
+   - `https://domain.com/favicon.svg`
+   - `https://domain.com/logo.svg`
+   - `https://domain.com/assets/logo.svg`
+3. **Look for brand/press pages** that often have SVG downloads
+4. **Save as** `{api-name}-icon.svg` in the integration folder
+
+If no SVG is available, note this in the README.
+
 ## Quality Checks
 
 Before finalizing, verify:
@@ -248,7 +262,8 @@ Use lowercase with hyphens for the folder name (e.g., `buy-me-a-coffee/`, `acme-
 
 1. Create the integration folder
 2. Write the complete spec file to the folder
-3. Write a README.md with:
+3. **Find and save the logo/icon** (SVG preferred) - see "Find Logo/Icon" section
+4. Write a README.md with:
    - Brief description of the API
    - How to obtain Bearer token/credentials
    - List of available operations

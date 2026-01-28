@@ -185,7 +185,11 @@ Use lowercase with hyphens for the folder name (e.g., `acme-api/`).
 
 1. Create the integration folder
 2. Write transformed spec to the folder
-3. Write README.md with:
+3. **Find and save the logo/icon** (SVG preferred):
+   - Search for `"{API name}" logo SVG` or brand assets
+   - Check common paths: `/favicon.svg`, `/logo.svg`, `/assets/logo.svg`
+   - Save as `{api-name}-icon.svg`
+4. Write README.md with:
    - Summary of transformations applied
    - How to obtain Bearer token
    - List of available operations
