@@ -25,7 +25,7 @@ claude
 Just describe what you need:
 
 ```
-help me create a rewst integration for https://developers.buymeacoffee.com
+help me create a rewst integration for https://terminal.shop
 ```
 
 ```
