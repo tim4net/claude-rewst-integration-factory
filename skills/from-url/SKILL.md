@@ -106,17 +106,23 @@ If documentation is incomplete, ask user:
 
 ### Phase 3: Find Logo/Icon
 
-Try to find an SVG logo for the integration:
+Find an SVG logo for the integration:
 
-1. Check the docs page for logo images
-2. Try common paths:
+1. **Check the docs page** for logo images in the header/footer
+2. **Try common paths** on the API's domain:
    - `https://domain.com/favicon.svg`
    - `https://domain.com/logo.svg`
    - `https://domain.com/assets/logo.svg`
-3. Search for `"{company name}" logo svg` or `"{company name}" brand assets`
-4. Check for brand/press kit pages that often have SVG downloads
+   - `https://domain.com/images/logo.svg`
 
-If found, save as `{api-name}-icon.svg` alongside the spec.
+3. **If not found, do a web search** for:
+   - `"{company name}" logo SVG`
+   - `"{company name}" brand assets`
+   - `"{company name}" press kit`
+
+4. **Fetch and save** as `{api-name}-icon.svg` in the integration folder
+
+Always attempt the web search if common paths don't yield an SVG - don't give up early.
 
 ### Phase 4: Explore Related Pages
 

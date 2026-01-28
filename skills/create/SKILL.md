@@ -219,15 +219,20 @@ If the API has rate limits, document them:
 
 Before finalizing, find an SVG logo for the integration:
 
-1. **Search** for `"{API name}" logo SVG` or `"{API name}" brand assets`
-2. **Check common paths**:
+1. **Check the API's domain** for common logo paths:
    - `https://domain.com/favicon.svg`
    - `https://domain.com/logo.svg`
    - `https://domain.com/assets/logo.svg`
-3. **Look for brand/press pages** that often have SVG downloads
-4. **Save as** `{api-name}-icon.svg` in the integration folder
+   - `https://domain.com/images/logo.svg`
 
-If no SVG is available, note this in the README.
+2. **If not found, do a web search** for:
+   - `"{API name}" logo SVG`
+   - `"{API name}" brand assets`
+   - `"{API name}" press kit`
+
+3. **Fetch and save** as `{api-name}-icon.svg` in the integration folder
+
+Always attempt both steps - don't skip the web search if common paths fail.
 
 ## Quality Checks
 
