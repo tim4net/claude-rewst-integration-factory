@@ -129,6 +129,48 @@ This starts a guided conversation to build your first Rewst integration.
 2. Go to **Marketplaces** tab → Add `tim4net/claude-plugins`
 3. Go to **Discover** tab → Install `rewst-openapi`
 
+### Troubleshooting: SSH Permission Error
+
+If you see `Permission denied (publickey)` when installing, this is a [known Claude Code bug](https://github.com/anthropics/claude-code/issues/14485) where it tries to use SSH instead of HTTPS.
+
+**Workaround:**
+
+1. First, add the marketplace (it will fail, but creates the config file):
+   ```
+   /plugin marketplace add tim4net/claude-plugins
+   ```
+
+2. Edit the config file to use HTTPS:
+
+   **macOS/Linux:**
+   ```bash
+   nano ~/.claude/plugins/known_marketplaces.json
+   ```
+
+   **Windows (PowerShell):**
+   ```powershell
+   notepad $env:USERPROFILE\.claude\plugins\known_marketplaces.json
+   ```
+
+3. Change the `tim4net` entry to:
+   ```json
+   {
+     "tim4net": {
+       "source": {
+         "source": "git",
+         "url": "https://github.com/tim4net/claude-plugins.git"
+       }
+     }
+   }
+   ```
+
+   (Change `"source": "github"` to `"source": "git"`, and `"repo"` to `"url"` with full HTTPS path)
+
+4. Save the file and retry:
+   ```
+   /plugin install rewst-openapi@tim4net
+   ```
+
 ## Which Skill Do I Need?
 
 ```mermaid
