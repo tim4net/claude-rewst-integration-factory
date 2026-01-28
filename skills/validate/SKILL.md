@@ -1,98 +1,93 @@
 ---
 name: validate
-description: Validate an OpenAPI spec for Rewst Custom Integration v2 compatibility
-argument-hint: <path-to-spec.json>
+description: Check if an OpenAPI spec will work with Rewst (uses Rewst's exact validation rules)
+argument-hint: <spec.json>
 ---
 
 # Validate OpenAPI Spec for Rewst
 
-You are validating an OpenAPI specification for compatibility with Rewst Custom Integration v2.
+You're checking if an OpenAPI spec is ready to upload to Rewst Custom Integration v2.
 
 ## Your Task
 
-Validate the spec at: `$ARGUMENTS`
+Validate: `$ARGUMENTS`
 
-If no path provided, ask the user which file to validate.
+If no file provided, ask which file to check.
 
-## Validation Steps
+## How to Validate
 
-Perform these checks in order:
+### Option 1: Use the Linter (Recommended)
 
-### 1. File Basics
-- [ ] File exists and is valid JSON
-- [ ] File size under 500KB
-- [ ] OpenAPI version is 3.0.x (not 3.1.x, not Swagger 2.0)
+Run the included linter which uses **Rewst's exact validation rules**:
 
-### 2. Authentication
-- [ ] `components.securitySchemes` contains a Bearer token scheme
-- [ ] Global `security` array references the Bearer scheme
-- [ ] No unsupported auth types (HMAC, OAuth flows, custom API keys)
+```bash
+node tools/rewst-lint.js <spec-file>
+```
 
-### 3. Server Configuration (Critical)
-- [ ] `servers` array is defined
+This runs the same Spectral ruleset that Rewst uses internally. If it passes, the spec will work in Rewst.
 
-### 3b. Server Configuration (Warning - recommended but not required)
-- [ ] Server URL uses variables for multi-tenant support (beneficial for MSPs, but single-tenant APIs may use fixed URLs)
+### Option 2: Manual Checks
 
-### 4. Response Structure
-For every operation response:
-- [ ] Has `content` property (not just `schema` directly)
-- [ ] Content type is `application/json`
-- [ ] Schema is defined (inline or $ref)
+If the linter isn't available, check these items:
 
-### 5. RequestBody Structure
-For every operation with requestBody:
-- [ ] Has `content` property
-- [ ] Content type is `application/json`
-- [ ] Schema is defined
+#### Must Pass (errors)
+- [ ] Valid JSON
+- [ ] Has `openapi` field (must be 3.0.x)
+- [ ] Has `info.title`
+- [ ] File size under ~500KB
 
-### 6. Schema Defaults
-For every schema with a `default` value:
-- [ ] Integer schemas have integer defaults (not `"0"`)
-- [ ] Number schemas have number defaults (not `"0.0"`)
-- [ ] Boolean schemas have boolean defaults (not `"true"` or `"false"`)
+#### Should Pass (Spectral rules that are still enabled)
+- [ ] Valid OpenAPI 3.0 structure
+- [ ] All `$ref` references resolve
+- [ ] Required fields present in schemas
 
-### 7. Tags
-- [ ] Global `tags` array is defined
-- [ ] Every tag used in operations exists in global tags
+#### Not Checked by Rewst (these rules are disabled)
+Rewst is permissive about these - they won't cause upload failures:
+- Operation descriptions (not required)
+- Parameter descriptions (not required)
+- Examples (not required)
+- Unused components (allowed)
+- Path naming conventions (flexible)
+- Response definitions (flexible)
+- Tags (not required to be defined)
 
-### 8. References
-- [ ] All `$ref` values resolve to existing components
-- [ ] No typos in reference paths
-- [ ] No references to `#/definitions/` (Swagger 2.0 style)
+## Output
 
-### 9. Operations
-- [ ] Every operation has an `operationId`
-- [ ] `operationId` values are unique
-- [ ] Path parameters are marked `required: true`
-
-## Output Format
-
-Provide a structured report:
+Provide a clear, friendly report:
 
 ```
-## Validation Results: [filename]
+## Validation: [filename]
 
-### Summary
-- Status: PASS / FAIL / WARNINGS
-- File size: X KB (limit: 500KB)
-- Operations: X
-- Schemas: X
+**Result:** ✓ Ready for Rewst / ✗ Needs fixes
 
-### Issues Found
+**Size:** X KB (limit: ~500KB)
 
-#### Critical (must fix)
-1. [Issue description with location]
+### Issues to Fix
+[List any errors that will prevent upload]
 
-#### Warnings (should fix)
-1. [Warning description with location]
+### Warnings (Optional)
+[List any warnings - these won't prevent upload but might be worth fixing]
 
-### Recommendations
-- [Any suggestions for improvement]
+### Next Steps
+[What to do - either "Upload to Rewst" or "Run /rewst-openapi:fix to repair"]
 ```
+
+## Common Issues and What They Mean
+
+**"The OpenAPI document must have an openapi field"**
+→ The file might be Swagger 2.0 (which uses `swagger` instead of `openapi`). Use `/rewst-openapi:transform` to convert it.
+
+**"The OpenAPI document must have a title"**
+→ Add `info.title` to your spec. This becomes the integration name in Rewst.
+
+**File too large**
+→ Use `/rewst-openapi:subset` to select which operations to keep.
 
 ## Reference
 
-See the knowledge files for detailed requirements:
-- @knowledge/rewst-requirements.md - Full requirements documentation
-- @knowledge/common-issues.md - Common errors and fixes
+The linter uses Rewst's exact Spectral ruleset from:
+`tools/.spectral-rewst.yaml`
+
+See also:
+- @knowledge/rewst-requirements.md
+- @knowledge/common-issues.md
