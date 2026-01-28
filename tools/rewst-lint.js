@@ -26,6 +26,15 @@ const path = require('path');
 const MAX_SIZE_KB = 500;
 const RULESET_PATH = path.join(__dirname, '.spectral-rewst.yaml');
 
+// Reserved parameter names that conflict with Rewst internals
+const FORBIDDEN_PARAM_NAMES = new Set([
+  'json_body', 'body', 'json', 'type', 'url_path', 'method', 'results_key',
+  'results', 'data', 'output_schema', 'path_params', 'query_params', 'headers',
+  'cookies', 'required', 'parameters', 'response', 'id', 'name', 'parent',
+  'parent_id', 'filter', 'filters', 'filter_key', 'filter_keys', 'filter_value',
+  'filter_values', 'query', 'queries', 'q'
+]);
+
 /**
  * Pre-validation checks (before Spectral)
  * These match Rewst's _lint_document() function
@@ -92,6 +101,99 @@ function preValidate(specPath) {
     sizeKB,
     spec
   };
+}
+
+/**
+ * Rewst-specific validation (warnings)
+ * These don't block upload but may cause operations to be skipped or behave unexpectedly
+ */
+function rewstValidate(spec) {
+  const warnings = [];
+
+  if (!spec.paths) return { warnings };
+
+  for (const [pathKey, pathItem] of Object.entries(spec.paths)) {
+    const methods = ['get', 'post', 'put', 'delete', 'patch', 'head', 'options', 'trace'];
+
+    for (const method of methods) {
+      const operation = pathItem[method];
+      if (!operation) continue;
+
+      const opLocation = `paths.${pathKey}.${method}`;
+
+      // Check: Operations without summary AND operationId will be silently skipped
+      if (!operation.summary && !operation.operationId) {
+        warnings.push({
+          path: opLocation,
+          message: 'Operation has no summary or operationId - will be SKIPPED by Rewst',
+          severity: 'warning'
+        });
+      }
+
+      // Check: Deprecated operations are skipped
+      if (operation.deprecated === true) {
+        warnings.push({
+          path: opLocation,
+          message: 'Deprecated operation will be SKIPPED by Rewst',
+          severity: 'warning'
+        });
+      }
+
+      // Check parameters
+      if (operation.parameters) {
+        for (let i = 0; i < operation.parameters.length; i++) {
+          const param = operation.parameters[i];
+          const paramLocation = `${opLocation}.parameters[${i}]`;
+
+          // Check: Cookie parameters are not supported
+          if (param.in === 'cookie') {
+            warnings.push({
+              path: paramLocation,
+              message: `Cookie parameter "${param.name}" is NOT SUPPORTED - will be ignored`,
+              severity: 'warning'
+            });
+          }
+
+          // Check: Forbidden parameter names
+          if (param.name && FORBIDDEN_PARAM_NAMES.has(param.name.toLowerCase())) {
+            warnings.push({
+              path: paramLocation,
+              message: `Parameter "${param.name}" uses a reserved name - may conflict with Rewst internals`,
+              severity: 'warning'
+            });
+          }
+        }
+      }
+    }
+  }
+
+  // Check path-level parameters too
+  for (const [pathKey, pathItem] of Object.entries(spec.paths)) {
+    if (pathItem.parameters) {
+      for (let i = 0; i < pathItem.parameters.length; i++) {
+        const param = pathItem.parameters[i];
+        const paramLocation = `paths.${pathKey}.parameters[${i}]`;
+
+        if (param.in === 'cookie') {
+          warnings.push({
+            path: paramLocation,
+            message: `Cookie parameter "${param.name}" is NOT SUPPORTED - will be ignored`,
+            severity: 'warning'
+          });
+        }
+
+        if (param.name && FORBIDDEN_PARAM_NAMES.has(param.name.toLowerCase())) {
+          warnings.push({
+            path: paramLocation,
+            message: `Parameter "${param.name}" uses a reserved name - may conflict with Rewst internals`,
+            severity: 'warning'
+          });
+        }
+      }
+    }
+  }
+
+  return { warnings };
 }
 
 /**
@@ -293,12 +395,15 @@ pass here should upload successfully to Rewst CI v2.
     process.exit(2);
   }
 
+  // Run Rewst-specific validation (generates warnings)
+  const rewstResult = rewstValidate(preResult.spec);
+
   // Combine results
   const combined = {
     success: preResult.success && spectralResult.success,
     sizeKB: preResult.sizeKB,
     errors: [...preResult.errors, ...(spectralResult.errors || [])],
-    warnings: spectralResult.warnings || []
+    warnings: [...(spectralResult.warnings || []), ...(rewstResult.warnings || [])]
   };
 
   console.log(formatOutput(combined, specPath, jsonOutput));
