@@ -166,94 +166,93 @@ flowchart TD
 ```
 
 **Other helpful skills:**
-- **Check before uploading** → `/rewst-openapi:validate`
-- **Combine multiple specs** → `/rewst-openapi:merge`
-- **Generate documentation** → `/rewst-openapi:document`
+- **Check before uploading** → just ask to validate
+- **Combine multiple specs** → ask to merge them
+- **Generate documentation** → ask for docs
 
-## Skills Reference
+---
 
-| Skill | What It Does |
-|-------|--------------|
-| `validate` | Check if your spec will work with Rewst |
-| `fix` | Automatically repair common problems |
-| `transform` | Convert older formats (Swagger, OpenAPI 3.1) to Rewst format |
-| `create` | Build a new spec with guided questions |
-| `from-url` | Generate a spec from API documentation |
-| `subset` | Shrink a large spec to fit Rewst's size limit |
-| `merge` | Combine multiple specs into one |
-| `document` | Create human-readable documentation |
+## Example Conversations
 
-### /rewst-openapi:validate
+You don't need to memorize commands. Just describe what you need and Claude will help. Here are some examples:
 
-Check if a spec is ready for Rewst.
+### "I have a spec but Rewst won't accept it"
 
-```bash
-/rewst-openapi:validate myspec.json
-```
+> **You:** I tried uploading logicmonitor-api.json to Rewst but it gave me errors. Can you fix it?
+>
+> **Claude:** I'll check what's wrong and fix it for you.
+> *(Claude runs validation, identifies issues, and repairs them)*
+>
+> **Claude:** Fixed 12 issues - the responses were missing content wrappers. I've saved the fixed version to `logicmonitor-api-fixed.json`. Try uploading that one.
 
-Uses **Rewst's exact validation rules** - if it passes here, it will work in Rewst.
+### "I have API docs but no spec file"
 
-### /rewst-openapi:fix
+> **You:** I want to create a Rewst integration for Datto RMM. Their API docs are at https://rmm.datto.com/api-docs/
+>
+> **Claude:** I'll look at those docs and build a spec for you. What operations do you need most - device management, alerts, or something else?
+>
+> **You:** Mostly device management and alerts
+>
+> **Claude:** *(builds the spec)* Done! I've created `datto-rmm-rewst.json` with 24 operations covering devices and alerts. It's 89KB, well under Rewst's limit.
 
-Automatically fix common issues.
+### "I want to build a spec from scratch"
 
-```bash
-/rewst-openapi:fix myspec.json
-```
+> **You:** I need to create an OpenAPI spec for our internal ticketing API
+>
+> **Claude:** I can help with that. What's the base URL for your API?
+>
+> **You:** https://tickets.acme.com/api/v1
+>
+> **Claude:** What authentication does it use?
+>
+> **You:** Bearer token
+>
+> **Claude:** What are the main things you can do with the API?
+>
+> **You:** Create tickets, list tickets, update status, add comments
+>
+> **Claude:** *(builds the spec step by step with you)*
 
-Fixes things like missing content wrappers, wrong default value types, and undefined tags.
+### "My spec is too big"
 
-### /rewst-openapi:transform
+> **You:** I have a ConnectWise spec with 400 operations but Rewst says it's too large
+>
+> **Claude:** That's over Rewst's ~500KB limit. What workflows are you building? I'll help you pick the most important operations.
+>
+> **You:** Mostly ticket management and company/contact sync
+>
+> **Claude:** *(analyzes and recommends)* I'd suggest keeping these 85 operations... *(creates a smaller spec)*
 
-Convert specs from other formats.
+### "Check before I upload"
 
-```bash
-/rewst-openapi:transform swagger-spec.json output.json
-```
+> **You:** Can you check if acme-api.json will work with Rewst before I upload it?
+>
+> **Claude:** *(runs Rewst's exact validation rules)*
+>
+> **Claude:** ✓ Looks good! 47 operations, 156KB. No errors found - it should upload fine.
 
-Handles Swagger 2.0, OpenAPI 3.1, and specs with unsupported authentication.
+### "I have multiple specs to combine"
 
-### /rewst-openapi:create
+> **You:** I have separate specs for billing-api.json and inventory-api.json. Can you combine them into one Rewst integration?
+>
+> **Claude:** I'll merge them and check for any conflicts... *(combines specs)* Done! Created `combined-api.json` with 62 operations total.
 
-Build a spec from scratch with guided questions.
+---
 
-```bash
-/rewst-openapi:create "My API Name"
-```
+## Quick Reference
 
-### /rewst-openapi:from-url
+While conversations work great, you can also use slash commands directly:
 
-Generate a spec from API documentation.
-
-```bash
-/rewst-openapi:from-url https://docs.example.com/api
-```
-
-### /rewst-openapi:subset
-
-Shrink a large spec to fit Rewst's ~500KB limit.
-
-```bash
-/rewst-openapi:subset large-spec.json 450
-```
-
-Helps you choose which operations to keep based on your workflow needs.
-
-### /rewst-openapi:merge
-
-Combine multiple specs into one.
-
-```bash
-/rewst-openapi:merge api-v1.json api-v2.json -o combined.json
-```
-
-### /rewst-openapi:document
-
-Generate readable documentation.
-
-```bash
-/rewst-openapi:document myspec.json
-```
+| What you want | Slash command | Or just say... |
+|---------------|---------------|----------------|
+| Check a spec | `/rewst-openapi:validate spec.json` | "check if spec.json works with Rewst" |
+| Fix errors | `/rewst-openapi:fix spec.json` | "fix the errors in spec.json" |
+| Convert formats | `/rewst-openapi:transform old.json new.json` | "convert this swagger file for Rewst" |
+| Build from scratch | `/rewst-openapi:create "API Name"` | "help me create a spec for X API" |
+| Build from docs | `/rewst-openapi:from-url https://...` | "create a spec from these API docs" |
+| Shrink size | `/rewst-openapi:subset large.json` | "this spec is too big for Rewst" |
+| Combine specs | `/rewst-openapi:merge a.json b.json` | "combine these specs into one" |
+| Generate docs | `/rewst-openapi:document spec.json` | "what operations are in this spec?" |
 
 ## Command-Line Linter
 
