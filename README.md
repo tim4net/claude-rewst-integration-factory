@@ -19,32 +19,57 @@ claude plugin install github:tim4net/claude-rewst-integration-factory
 
 ## Which Skill Do I Need?
 
-```
-START HERE
-    │
-    ▼
-Do you have an OpenAPI/Swagger spec file?
-    │
-    ├─ YES → Does it work when you upload to Rewst?
-    │           │
-    │           ├─ YES → You're done! 🎉
-    │           │
-    │           ├─ NO, I get errors → /rewst-openapi:fix
-    │           │
-    │           └─ NO, file too large → /rewst-openapi:subset
-    │
-    └─ NO → Do you have API documentation (a URL)?
-              │
-              ├─ YES → /rewst-openapi:from-url
-              │
-              └─ NO → /rewst-openapi:create
+```mermaid
+flowchart TD
+    %% Styling
+    classDef question fill:#fff3cd,stroke:#ffc107,stroke-width:2px,color:#000
+    classDef success fill:#d4edda,stroke:#28a745,stroke-width:2px,color:#000
+    classDef skill fill:#cce5ff,stroke:#007bff,stroke-width:2px,color:#000
+    classDef start fill:#e2e3e5,stroke:#6c757d,stroke-width:3px,color:#000
+
+    %% Nodes
+    START([🚀 Start Here]):::start
+
+    Q1{Do you have an<br/>OpenAPI or Swagger<br/>spec file?}:::question
+    Q2{Does it work when<br/>you upload to Rewst?}:::question
+    Q3{What goes wrong?}:::question
+    Q4{Do you have API<br/>documentation?<br/>e.g. a docs URL}:::question
+
+    DONE([✅ You're all set!]):::success
+
+    FIX["/rewst-openapi:fix<br/>━━━━━━━━━━━━━━<br/>Auto-repair errors"]:::skill
+    SUBSET["/rewst-openapi:subset<br/>━━━━━━━━━━━━━━<br/>Shrink to fit size limit"]:::skill
+    TRANSFORM["/rewst-openapi:transform<br/>━━━━━━━━━━━━━━<br/>Convert to Rewst format"]:::skill
+    FROMURL["/rewst-openapi:from-url<br/>━━━━━━━━━━━━━━<br/>Build from documentation"]:::skill
+    CREATE["/rewst-openapi:create<br/>━━━━━━━━━━━━━━<br/>Build with guided questions"]:::skill
+
+    %% Flow
+    START --> Q1
+
+    Q1 -->|Yes| Q2
+    Q1 -->|No| Q4
+
+    Q2 -->|Yes, works great!| DONE
+    Q2 -->|No, has problems| Q3
+
+    Q3 -->|Errors in Rewst| FIX
+    Q3 -->|File too large| SUBSET
+    Q3 -->|Wrong format<br/>Swagger 2.0 or 3.1| TRANSFORM
+
+    Q4 -->|Yes, have docs| FROMURL
+    Q4 -->|No, starting fresh| CREATE
+
+    FIX --> DONE
+    SUBSET --> DONE
+    TRANSFORM --> DONE
+    FROMURL --> DONE
+    CREATE --> DONE
 ```
 
-**Other situations:**
-- Want to check a spec before uploading? → `/rewst-openapi:validate`
-- Need to convert Swagger 2.0 or OpenAPI 3.1? → `/rewst-openapi:transform`
-- Have multiple specs to combine? → `/rewst-openapi:merge`
-- Want documentation of what's in a spec? → `/rewst-openapi:document`
+**Other helpful skills:**
+- **Check before uploading** → `/rewst-openapi:validate`
+- **Combine multiple specs** → `/rewst-openapi:merge`
+- **Generate documentation** → `/rewst-openapi:document`
 
 ## Skills Reference
 
