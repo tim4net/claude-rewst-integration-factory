@@ -97,12 +97,12 @@ For each endpoint category:
 
 ### Operation Template
 
-Each operation should follow this pattern:
+**CRITICAL**: Every operation MUST have both `operationId` AND `summary`. Operations missing both are silently skipped by Rewst.
 
 ```json
 {
   "operationId": "verbNoun",
-  "summary": "Short description",
+  "summary": "Short action description (required)",
   "description": "Detailed description of what this does",
   "tags": ["Category"],
   "parameters": [],
@@ -219,13 +219,15 @@ If the API has rate limits, document them:
 
 Before finalizing, verify:
 
-- [ ] All operations have unique `operationId`
+- [ ] **Every operation has BOTH `operationId` AND `summary`** (operations missing both are silently skipped by Rewst)
+- [ ] All `operationId` values are unique across the spec
 - [ ] All path parameters have `required: true`
 - [ ] All responses have `content` with `application/json`
 - [ ] All requestBody entries have `content`
 - [ ] All default values match their schema types
 - [ ] All tags are defined globally
 - [ ] File size is under 500KB
+- [ ] No forbidden parameter names (id, name, filter, query, body, etc.)
 
 ## Output
 

@@ -93,6 +93,22 @@ Convert to Bearer token auth:
 
 Fix all structural issues:
 
+#### Fix 0: Missing operationId/summary (CRITICAL)
+
+Operations without BOTH `operationId` AND `summary` are silently skipped by Rewst. Generate missing values:
+
+```json
+// If missing operationId, generate from method + path:
+// GET /users/{id} → "getUsersById"
+// POST /orders → "postOrders"
+
+// If missing summary, generate from operationId or path:
+// operationId: "getUsersById" → summary: "Get Users By Id"
+// path: /users/{id} + method: GET → summary: "Get User"
+```
+
+Ensure every operation ends up with both fields.
+
 1. **Responses** - Ensure content property:
 ```json
 "responses": {

@@ -137,6 +137,10 @@ Would you like me to:
 
 ### Phase 4: Build Spec Structure
 
+**CRITICAL**: Every operation MUST have both `operationId` AND `summary`. Operations missing both are silently skipped by Rewst. Always generate both fields, even if documentation doesn't provide them:
+- `operationId`: Generate from method + path (e.g., `getUsersById`)
+- `summary`: Generate from operationId or path description (e.g., "Get User By ID")
+
 Create spec iteratively:
 
 ```json

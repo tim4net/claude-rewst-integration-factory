@@ -24,21 +24,39 @@ Read the spec and identify all fixable issues:
 ## Issues Found
 
 ### Auto-fixable
-1. [X] Response missing content property (N occurrences)
-2. [X] RequestBody missing content property (N occurrences)
-3. [X] Default value type mismatch (N occurrences)
-4. [X] Missing global tags (N tags)
-5. [X] Missing ErrorResponse schema
+1. [X] Missing operationId or summary (N operations) - CRITICAL: these get skipped!
+2. [X] Response missing content property (N occurrences)
+3. [X] RequestBody missing content property (N occurrences)
+4. [X] Default value type mismatch (N occurrences)
+5. [X] Missing global tags (N tags)
+6. [X] Missing ErrorResponse schema
+7. [X] Path parameters missing required:true (N occurrences)
 
 ### Requires Manual Review
 1. [ ] Unsupported auth type (currently: X)
 2. [ ] File size over limit (X KB)
 3. [ ] Unresolved $ref: X
+4. [ ] Reserved parameter names (id, name, filter, etc.)
 ```
 
 ### Phase 2: Apply Fixes
 
 Fix each issue category:
+
+#### Fix 0: Missing operationId/summary (CRITICAL)
+
+Operations without BOTH `operationId` AND `summary` are silently skipped by Rewst. Auto-generate missing values:
+
+```json
+// Generate operationId from method + path:
+// GET /users/{id} → "getUsersById"
+// POST /orders → "postOrders"
+// DELETE /items/{itemId}/comments/{commentId} → "deleteItemsCommentsById"
+
+// Generate summary from operationId (title case, split camelCase):
+// "getUsersById" → "Get Users By Id"
+// "postOrders" → "Post Orders"
+```
 
 #### Fix 1: Response Content Structure
 
@@ -149,6 +167,7 @@ Ensure all path parameters have `required: true`:
 ### Applied Fixes
 | Issue | Count | Status |
 |-------|-------|--------|
+| Missing operationId/summary | 12 | Generated |
 | Response content structure | 45 | Fixed |
 | RequestBody content structure | 12 | Fixed |
 | Default type mismatches | 8 | Fixed |
