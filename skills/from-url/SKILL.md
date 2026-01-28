@@ -25,6 +25,7 @@ If no URL provided, ask for the API documentation URL.
    - Endpoint listings
    - Request/response examples
    - Rate limiting info
+   - **Logo/Icon** - Look for an SVG logo to use as the integration icon
 
 3. Report findings:
 
@@ -66,7 +67,22 @@ If documentation is incomplete, ask user:
 
 4. **Missing schemas**: "I couldn't find response schemas. Do you have example responses?"
 
-### Phase 3: Explore Related Pages
+### Phase 3: Find Logo/Icon
+
+Try to find an SVG logo for the integration:
+
+1. Check the docs page for logo images
+2. Try common paths:
+   - `https://domain.com/favicon.svg`
+   - `https://domain.com/logo.svg`
+   - `https://domain.com/assets/logo.svg`
+   - `https://domain.com/images/logo.svg`
+3. Check for brand/press kit pages that have SVG downloads
+4. Look in the page source for SVG references
+
+If found, save as `{api-name}-icon.svg` alongside the spec.
+
+### Phase 4: Explore Related Pages
 
 Look for additional documentation:
 - Link to "API Reference" or "Endpoints"
