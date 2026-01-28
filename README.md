@@ -10,10 +10,109 @@ Rewst lets you connect to any API using "Custom Integrations." To create one, yo
 - **Fix** specs that have errors
 - **Validate** specs before uploading to Rewst
 
-## Quick Start
+## Prerequisites: Install Claude Code
+
+This plugin runs inside **Claude Code**, Anthropic's AI coding assistant. If you don't have it yet, follow the steps for your operating system:
+
+### macOS
+
+1. **Install Homebrew** (if you don't have it):
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. **Install Node.js** (required):
+   ```bash
+   brew install node
+   ```
+
+3. **Install Claude Code**:
+   ```bash
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+4. **Start Claude Code**:
+   ```bash
+   claude
+   ```
+   On first run, it will open a browser to sign in with your Anthropic account.
+
+### Windows
+
+1. **Install Node.js**:
+   - Download from [nodejs.org](https://nodejs.org/) (LTS version)
+   - Run the installer, accept defaults
+
+2. **Open PowerShell** (search "PowerShell" in Start menu)
+
+3. **Install Claude Code**:
+   ```powershell
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+4. **Start Claude Code**:
+   ```powershell
+   claude
+   ```
+   On first run, it will open a browser to sign in with your Anthropic account.
+
+### Linux (Ubuntu/Debian)
+
+1. **Install Node.js**:
+   ```bash
+   curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+   ```
+
+2. **Install Claude Code**:
+   ```bash
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+3. **Start Claude Code**:
+   ```bash
+   claude
+   ```
+   On first run, it will open a browser to sign in with your Anthropic account.
+
+### Linux (Fedora/RHEL)
+
+1. **Install Node.js**:
+   ```bash
+   sudo dnf install nodejs
+   ```
+
+2. **Install Claude Code**:
+   ```bash
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+3. **Start Claude Code**:
+   ```bash
+   claude
+   ```
+
+### Verify Installation
+
+After installation, verify it works:
+```bash
+claude --version
+```
+
+You should see a version number like `1.x.x`.
+
+---
+
+## Install This Plugin
+
+Once Claude Code is running, install this plugin:
 
 ```bash
-# Install the plugin
+/install github:tim4net/claude-rewst-integration-factory
+```
+
+Or from the command line before starting Claude:
+```bash
 claude plugin install github:tim4net/claude-rewst-integration-factory
 ```
 
