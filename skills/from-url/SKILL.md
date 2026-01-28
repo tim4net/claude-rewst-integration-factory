@@ -76,9 +76,8 @@ Try to find an SVG logo for the integration:
    - `https://domain.com/favicon.svg`
    - `https://domain.com/logo.svg`
    - `https://domain.com/assets/logo.svg`
-   - `https://domain.com/images/logo.svg`
-3. Check for brand/press kit pages that have SVG downloads
-4. Look in the page source for SVG references
+3. Search for `"{company name}" logo svg` or `"{company name}" brand assets`
+4. Check for brand/press kit pages that often have SVG downloads
 
 If found, save as `{api-name}-icon.svg` alongside the spec.
 
