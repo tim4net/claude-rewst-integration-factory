@@ -109,7 +109,7 @@ Once Claude Code is running:
 
 **Step 1: Add the marketplace**
 ```
-/plugin marketplace add tim4net/tim4net
+/plugin marketplace add tim4net/claude-plugins
 ```
 
 **Step 2: Install the plugin**
@@ -119,7 +119,7 @@ Once Claude Code is running:
 
 **Or use the UI:**
 1. Type `/plugin` to open the plugin manager
-2. Go to **Marketplaces** tab → Add `tim4net/tim4net`
+2. Go to **Marketplaces** tab → Add `tim4net/claude-plugins`
 3. Go to **Discover** tab → Install `rewst-openapi`
 
 ## Which Skill Do I Need?
