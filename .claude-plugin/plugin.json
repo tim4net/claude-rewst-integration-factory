@@ -1,7 +1,7 @@
 {
   "name": "rewst-openapi",
   "description": "Create, validate, and transform OpenAPI specs for Rewst Custom Integration v2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "Tim",
     "url": "https://github.com/tim4net"
@@ -10,5 +10,39 @@
     "type": "git",
     "url": "https://github.com/tim4net/claude-rewst-integration-factory"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "examples": [
+    {
+      "command": "/rewst-openapi:validate myspec.json",
+      "description": "Check an OpenAPI spec for Rewst compatibility issues"
+    },
+    {
+      "command": "/rewst-openapi:transform swagger.json rewst-api.json",
+      "description": "Convert a Swagger/OpenAPI spec to Rewst-compatible format"
+    },
+    {
+      "command": "/rewst-openapi:create \"Acme API\"",
+      "description": "Build a new Rewst-compatible spec from scratch"
+    },
+    {
+      "command": "/rewst-openapi:fix broken-spec.json",
+      "description": "Auto-fix common issues like missing content wrappers"
+    },
+    {
+      "command": "/rewst-openapi:subset large-api.json 450",
+      "description": "Reduce a large spec to fit Rewst's 500KB limit"
+    },
+    {
+      "command": "/rewst-openapi:merge api-v1.json api-v2.json -o combined.json",
+      "description": "Combine multiple specs into one"
+    },
+    {
+      "command": "/rewst-openapi:document myspec.json",
+      "description": "Generate human-readable documentation"
+    },
+    {
+      "command": "/rewst-openapi:from-url https://docs.example.com/api",
+      "description": "Build a spec by scraping API documentation"
+    }
+  ]
 }

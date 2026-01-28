@@ -28,9 +28,11 @@ Perform these checks in order:
 - [ ] Global `security` array references the Bearer scheme
 - [ ] No unsupported auth types (HMAC, OAuth flows, custom API keys)
 
-### 3. Server Configuration
+### 3. Server Configuration (Critical)
 - [ ] `servers` array is defined
-- [ ] Server URL uses variables for multi-tenant support (if applicable)
+
+### 3b. Server Configuration (Warning - recommended but not required)
+- [ ] Server URL uses variables for multi-tenant support (beneficial for MSPs, but single-tenant APIs may use fixed URLs)
 
 ### 4. Response Structure
 For every operation response:
