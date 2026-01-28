@@ -117,7 +117,12 @@ Once Claude Code is running:
 /plugin install rewst-openapi@tim4net
 ```
 
-That's it! The plugin is now available.
+**Step 3: Try it out**
+```
+/rewst-openapi:create
+```
+
+This starts a guided conversation to build your first Rewst integration.
 
 **Or use the UI:**
 1. Type `/plugin` to open the plugin manager
