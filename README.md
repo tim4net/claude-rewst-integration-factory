@@ -117,6 +117,8 @@ Once Claude Code is running:
 /plugin install rewst-openapi@tim4net
 ```
 
+That's it! The plugin is now available.
+
 **Or use the UI:**
 1. Type `/plugin` to open the plugin manager
 2. Go to **Marketplaces** tab → Add `tim4net/claude-plugins`
