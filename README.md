@@ -14,7 +14,18 @@ claude plugin install /path/to/claude-rewst-integration-factory
 
 ## Skills
 
-This plugin provides three skills:
+This plugin provides eight skills:
+
+| Skill | Purpose |
+|-------|---------|
+| `validate` | Check specs against Rewst requirements |
+| `transform` | Convert existing specs to Rewst format |
+| `create` | Build new specs from scratch |
+| `fix` | Auto-fix common compatibility issues |
+| `subset` | Reduce spec size to fit limits |
+| `merge` | Combine multiple specs into one |
+| `document` | Generate human-readable reference docs |
+| `from-url` | Build spec from API documentation URL |
 
 ### `/rewst-openapi:validate`
 
@@ -64,6 +75,81 @@ Guides you through:
 - Schema creation
 - Validation and output
 
+### `/rewst-openapi:fix`
+
+Automatically fix common Rewst compatibility issues.
+
+```bash
+/rewst-openapi:fix path/to/spec.json
+```
+
+Auto-fixes:
+- Response content structure
+- RequestBody content structure
+- Default value type mismatches
+- Missing global tags
+- Missing ErrorResponse schema
+- Path parameter `required` flags
+
+### `/rewst-openapi:subset`
+
+Reduce an OpenAPI spec to fit Rewst's size limits.
+
+```bash
+/rewst-openapi:subset large-spec.json 450
+```
+
+Features:
+- Analyzes spec size breakdown
+- Asks about your workflow use cases
+- Recommends operations to keep/remove
+- Removes orphaned schemas
+- Validates result
+
+### `/rewst-openapi:merge`
+
+Combine multiple OpenAPI specs into one.
+
+```bash
+/rewst-openapi:merge spec1.json spec2.json -o combined.json
+```
+
+Handles:
+- Path and schema conflict detection
+- Tag merging
+- Auth scheme unification
+- Size limit checking
+
+### `/rewst-openapi:document`
+
+Generate human-readable documentation for workflow builders.
+
+```bash
+/rewst-openapi:document spec.json --format md
+```
+
+Generates:
+- Operations reference by category
+- Parameters and response tables
+- Schema reference
+- Common workflow patterns
+- Rewst-specific usage tips
+
+### `/rewst-openapi:from-url`
+
+Build a spec by scraping API documentation.
+
+```bash
+/rewst-openapi:from-url https://docs.example.com/api
+```
+
+Features:
+- Extracts endpoints from docs
+- Infers schemas from examples
+- Identifies auth requirements
+- Looks for existing OpenAPI specs
+- Builds Rewst-compatible output
+
 ## Rewst CI v2 Requirements Summary
 
 | Requirement | Value |
@@ -85,7 +171,12 @@ claude-rewst-integration-factory/
 ├── skills/
 │   ├── validate/SKILL.md     # Validation skill
 │   ├── transform/SKILL.md    # Transformation skill
-│   └── create/SKILL.md       # Creation skill
+│   ├── create/SKILL.md       # Creation skill
+│   ├── fix/SKILL.md          # Auto-fix skill
+│   ├── subset/SKILL.md       # Size reduction skill
+│   ├── merge/SKILL.md        # Spec merging skill
+│   ├── document/SKILL.md     # Documentation skill
+│   └── from-url/SKILL.md     # URL scraping skill
 ├── knowledge/
 │   ├── rewst-requirements.md # Full requirements doc
 │   ├── common-issues.md      # Error catalog
