@@ -1,0 +1,14 @@
+{
+  "name": "rewst-openapi",
+  "description": "Create, validate, and transform OpenAPI specs for Rewst Custom Integration v2",
+  "version": "1.0.0",
+  "author": {
+    "name": "Tim",
+    "url": "https://github.com/tim4net"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tim4net/claude-rewst-integration-factory"
+  },
+  "license": "MIT"
+}
