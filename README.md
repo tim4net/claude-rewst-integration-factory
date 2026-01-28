@@ -43,6 +43,7 @@ check if my-api.json will work with Rewst before I upload it
 - **Validates** specs using Rewst's exact rules
 - **Shrinks** specs that are too large
 - **Merges** multiple specs into one
+- **Finds logos** by searching the web for SVG icons to include with your integration
 
 ## Updating
 
